@@ -1,3 +1,7 @@
+/*
+Create a BoardWidget object. It handles the Board UI.
+@param{Board}
+*/
 var BoardWidget = function(domContainer, board) {
   var jqueryBoard = [];
 
@@ -18,6 +22,10 @@ var BoardWidget = function(domContainer, board) {
     return node;
   };
 
+  /*
+  Draw board configuration depending on the mode selected.
+  @param{String} alternative, the initial board configuration a user selects.
+  */
   var draw = function(alternative) {
     switch(alternative) {
       case 'stripes':
@@ -65,7 +73,6 @@ var BoardWidget = function(domContainer, board) {
     }
   };
 
-
   var selector = $('<select>');
   selector.append($('<option>').val('custom').html('Custom'));
   selector.append($('<option>').val('stripes').html('Stripes'));
@@ -92,6 +99,11 @@ var BoardWidget = function(domContainer, board) {
     jqueryBoard.push(jqueryRow);
   }
 
+  /*
+  Update board UI representation of a live/dead cell.
+  @param{Integer} x, the x coordinate of the cell.
+  @param{Integer} y, the y coordinate of the cell.
+  */
   var recolorBoard = function(x, y) {
     if (x>=0 && x<50 && y>=0 && y<50) { //handles attempt to color out of grid
       if (board.isAlive([x,y])) {

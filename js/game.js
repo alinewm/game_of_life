@@ -1,8 +1,16 @@
+/*
+Create a GameOfLife object. It contains the game logic and rules.
+@constructor
+*/
 var GameOfLife = function() {
   var that = {}
   var that = Object.create(GameOfLife.prototype);
   var interval;
 
+  /*
+  Start the game.
+  @param{Board}
+  */
   that.start = function(board) {
       interval = setInterval(function() {
       that.step(board);
@@ -14,10 +22,18 @@ var GameOfLife = function() {
     }, 200);
   };
 
+  /*
+  Stop the game while putting current configuration on hold.
+  @param{}
+  */
   that.stop = function() {
     clearInterval(interval);
   };
 
+  /*
+  Execute one step of the game by applying the game rules.
+  @param{Board}
+  */
   that.step = function(board) {
     console.log('step');
     var toKill = [];
@@ -33,7 +49,7 @@ var GameOfLife = function() {
       } else {
         toLive.push([x, y]);
       }
-      board.getDeadNeighbors(x,y).forEach(function(coordinates) {
+      board.getDeadNeighbors(cell).forEach(function(coordinates) {
         if ([coordinates] in deadNeighbors) {
           deadNeighbors[coordinates] += 1;
         } else {

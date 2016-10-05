@@ -1,3 +1,7 @@
+/*
+Create a MenuWidget object. It handles the UI component of the game logic.
+@param{Board}
+*/
 var MenuWidget = function(domContainer, board, game) {
 	var instructions = $("<label>")
 	.html('Select one of a collection of preset starting states, or create an arbitrary starting configuration');
