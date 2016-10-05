@@ -8,25 +8,17 @@ var Board = function() {
     subscribers.push(subscriber);
   }
 
-  var publishChanges = function() {
-    subscribers.forEach(function(subscriber) { subscriber(); });
+  var publishChanges = function(x, y) {
+    subscribers.forEach(function(subscriber) { subscriber(x,y); });
   }
-
-  // that.makeLive = function(x, y) {
-  //   grid[[x,y]] = true;
-  // };
-
-  // that.kill = function(x, y) {
-  //   grid[[x,y]] = false;
-  // };
 
   that.makeLive = function(lst) {
     lst.forEach(function(coordinates) { 
       var x = coordinates[0];
       var y = coordinates[1];
       grid[[x,y]] = true;
+      publishChanges(x, y);
     });
-    publishChanges();
   };
 
   that.kill = function(lst) {
@@ -34,8 +26,12 @@ var Board = function() {
       var x = coordinates[0];
       var y = coordinates[1];
       delete grid[[x,y]];
+      publishChanges(x, y);
     });
-    publishChanges();
+  };
+
+  that.isAlive = function(xyList) {
+    return (xyList in grid);
   };
 
   that.getAllAlive = function() {
@@ -60,12 +56,13 @@ var Board = function() {
   }
 
   that.getDeadNeighbors = function(x, y) {
-    return that.getNeighborIndices(x, y).filter(function(key) { console.log(key); return !([key] in grid); });
+    return that.getNeighborIndices(x, y).filter(function(key) { return !that.isAlive(key); });
   };
 
   that.getTotalLiveNeighbors = function(x, y) {
-    return that.getNeighborIndices(x, y).filter(function(key) { return ([key] in grid); }).length;
+    return that.getNeighborIndices(x, y).filter(function(key) { return that.isAlive(key); }).length;
   };
+
   Object.freeze(that);
   return that;
 };

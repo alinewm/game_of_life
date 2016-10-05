@@ -2,8 +2,7 @@ var BoardWidget = function(domContainer, board) {
   var jqueryBoard = [];
 
   var Cell = function(x, y) {
-    var id = 'x' + x + 'y' + y;
-    var node = $("<div id=" + id + ">").css({
+    var node = $("<div>").css({
         "width": "10px",
         "height": "10px",
         "border": "1px solid black",
@@ -11,7 +10,7 @@ var BoardWidget = function(domContainer, board) {
         "background-color": "white"
       }).click(function() {
         board.makeLive([[x, y]]);
-        console.log(board.getAllAlive());
+        // console.log(board.getAllAlive());
       });
     return node;
   };
@@ -20,7 +19,7 @@ var BoardWidget = function(domContainer, board) {
     var row = $(document.createElement("div"));
     var jqueryRow = [];
     for(x=0; x<50; x++) {
-      var cell = Cell(x, y)
+      var cell = Cell(x, y);
       row.append(cell);
       jqueryRow.push(cell);
     }
@@ -28,27 +27,17 @@ var BoardWidget = function(domContainer, board) {
     jqueryBoard.push(jqueryRow);
   }
 
-  var recolorBoard = function() {
-    console.log('recolorBoard');
-    for(y=0; y<jqueryBoard.length; y++) {
-      for(x=0; x<jqueryBoard.length; x++) {
+  var recolorBoard = function(x, y) {
+    if (x>=0 && y>=0) { //handles attempt to color out of grid
+      if (board.isAlive([x,y])) {
+        jqueryBoard[y][x].css("background-color", "green");
+      } else {
         jqueryBoard[y][x].css("background-color", "white");
       }
     }
-
-    board.getAllAlive().forEach(function(coordinate) {
-      console.log(coordinate);
-      var x = coordinate[0];
-      var y = coordinate[1];
-      console.log('y ' + y);
-      console.log('x ' + x);
-      if (x>=0 && y>=0) { //handles attempt to color out of grid
-        jqueryBoard[y][x].css("background-color", "green");
-      };
-    });
   };
 
-  board.subscribe(function() {
-    recolorBoard();
+  board.subscribe(function(x, y) {
+    recolorBoard(x, y);
   });
 };
