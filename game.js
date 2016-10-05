@@ -11,7 +11,7 @@ var GameOfLife = function() {
       //   grid.draw(update);
       // end
       // board.redraw(updates)
-    }, 1000);
+    }, 200);
   };
 
   that.stop = function() {
@@ -43,7 +43,7 @@ var GameOfLife = function() {
     });
 
     Object.keys(deadNeighbors).forEach(function(key) {
-      console.log('deadNeighbors '+ key + ' ' + deadNeighbors[key]);
+      // console.log('deadNeighbors '+ key + ' ' + deadNeighbors[key]);
       var x = key.split(',')[0];
       var y = key.split(',')[1];
       if (deadNeighbors[key]===3) {

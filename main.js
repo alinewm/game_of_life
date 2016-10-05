@@ -3,8 +3,8 @@
 		var game = GameOfLife();
 		var board = Board();
 
-		MenuWidget($('menu'), board, game);
-		BoardWidget($('board'), board);
+		MenuWidget($('#menu'), board, game);
+		BoardWidget($('#board'), board);
 
 	// 	board.on('start-btn-clicked', function() {
 	// 		// Get all the live nodes
