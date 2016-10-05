@@ -24,7 +24,8 @@ var Board = function() {
     lst.forEach(function(coordinates) { 
       var x = coordinates[0];
       var y = coordinates[1];
-      grid[[x,y]] = true });
+      grid[[x,y]] = true;
+    });
     publishChanges();
   };
 
@@ -32,37 +33,39 @@ var Board = function() {
     lst.forEach(function(coordinates) { 
       var x = coordinates[0];
       var y = coordinates[1];
-      grid[[x,y]] = false });
+      delete grid[[x,y]];
+    });
     publishChanges();
   };
 
   that.getAllAlive = function() {
-    return Object.keys(grid).filter(function(key) { return grid[key]===true; }).map(function(pair) {
+    var result = Object.keys(grid).map(function(pair) {
       var x = pair.split(',')[0];
       var y = pair.split(',')[1];
       return [parseInt(x), parseInt(y)];
     });
+    return result;
   };
 
-  that.getAllDead = function() {
-    return Object.keys(grid).filter(function(key) { return grid[key]===false; }).map(function(pair) {
-      var x = pair.split(',')[0];
-      var y = pair.split(',')[1];
-      return [parseInt(x), parseInt(y)];
-    });
-  };
-
-  that.getNeighbors = function(x, y) {
-    var nw = grid[[x-1, y+1]];
-    var ne = grid[[x+1, y+1]];
-    var sw = grid[[x-1, y-1]];
-    var se = grid[[x+1, y-1]];
-    var w = grid[[x-1, y]];
-    var e = grid[[x+1, y]];
-    var n = grid[[x, y+1]];
-    var s = grid[[x, y-1]];
-    return [w, e, n, s, nw, ne, sw, se].filter(function(neighbor) { return neighbor===true;}).length;
+  that.getNeighborIndices = function(x, y) {
+    var neighbors = [];
+    for(i=x-1; i<=x+1; i++) {
+      for(j=y-1;j<=y+1; j++) {
+        if (!(i===x && j===y)) {
+          neighbors.push([i, j]);
+        }
+      }
+    }
+    return neighbors;
   }
+
+  that.getDeadNeighbors = function(x, y) {
+    return that.getNeighborIndices(x, y).filter(function(key) { console.log(key); return !([key] in grid); });
+  };
+
+  that.getTotalLiveNeighbors = function(x, y) {
+    return that.getNeighborIndices(x, y).filter(function(key) { return ([key] in grid); }).length;
+  };
   Object.freeze(that);
   return that;
 };

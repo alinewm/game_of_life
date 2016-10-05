@@ -1,7 +1,8 @@
 var BoardWidget = function(domContainer, board) {
+  var jqueryBoard = [];
 
   var Cell = function(x, y) {
-    var id = 'x' + x + 'y' + y
+    var id = 'x' + x + 'y' + y;
     var node = $("<div id=" + id + ">").css({
         "width": "10px",
         "height": "10px",
@@ -9,43 +10,42 @@ var BoardWidget = function(domContainer, board) {
         "float": "left",
         "background-color": "white"
       }).click(function() {
-        // $(this).css("background-color", "green");
         board.makeLive([[x, y]]);
         console.log(board.getAllAlive());
       });
     return node;
   };
 
-  domContainer.css({
-    "position": "absolute",
-    "width": "600px",
-    "height": "auto"
-  });
-
-  for(y=1; y<=50; y++) {
+  for(y=0; y<50; y++) {
     var row = $(document.createElement("div"));
-    for(x=1; x<=50; x++) {
-      row.append(Cell(x, y));
+    var jqueryRow = [];
+    for(x=0; x<50; x++) {
+      var cell = Cell(x, y)
+      row.append(cell);
+      jqueryRow.push(cell);
     }
     $('#board').append(row);
+    jqueryBoard.push(jqueryRow);
   }
 
   var recolorBoard = function() {
     console.log('recolorBoard');
+    for(y=0; y<jqueryBoard.length; y++) {
+      for(x=0; x<jqueryBoard.length; x++) {
+        jqueryBoard[y][x].css("background-color", "white");
+      }
+    }
+
     board.getAllAlive().forEach(function(coordinate) {
       console.log(coordinate);
       var x = coordinate[0];
       var y = coordinate[1];
-      var id = '#x' + x + 'y' + y
-      $(id).css("background-color", "green");
-    })
-    board.getAllDead().forEach(function(coordinate) {
-      console.log(coordinate);
-      var x = coordinate[0];
-      var y = coordinate[1];
-      var id = '#x' + x + 'y' + y
-      $(id).css("background-color", "white");
-    })
+      console.log('y ' + y);
+      console.log('x ' + x);
+      if (x>=0 && y>=0) { //handles attempt to color out of grid
+        jqueryBoard[y][x].css("background-color", "green");
+      };
+    });
   };
 
   board.subscribe(function() {
