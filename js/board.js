@@ -9,7 +9,7 @@ var Board = function() {
   var subscribers = [];
 
   /*
-  Attach particular subscriber to a Board object.
+  Attach particular subscriber to a Board
   @param{function}
   */
   that.subscribe = function(subscriber) {
@@ -99,8 +99,8 @@ var Board = function() {
   Amongst neighbors of a particular cell get the ones that are alive.
   @param{}
   */
-  that.getTotalLiveNeighbors = function(x, y) {
-    return that.getNeighborIndices(x, y).filter(function(key) { return that.isAlive(key); }).length;
+  that.getLiveNeighbors = function(x, y) {
+    return that.getNeighborIndices(x, y).filter(function(key) { return that.isAlive(key); });
   };
 
   Object.freeze(that);

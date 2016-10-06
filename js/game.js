@@ -43,13 +43,13 @@ var GameOfLife = function() {
     board.getAllAlive().forEach(function(cell) {
       var x = cell[0];
       var y = cell[1];
-      var neighbors = board.getTotalLiveNeighbors(x, y);
+      var neighbors = board.getLiveNeighbors(x, y).length;
       if (neighbors < 2 || neighbors > 3) {
         toKill.push([x, y]);
       } else {
         toLive.push([x, y]);
       }
-      board.getDeadNeighbors(cell).forEach(function(coordinates) {
+      board.getDeadNeighbors(x,y).forEach(function(coordinates) {
         if ([coordinates] in deadNeighbors) {
           deadNeighbors[coordinates] += 1;
         } else {
