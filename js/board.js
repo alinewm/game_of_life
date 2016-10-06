@@ -87,6 +87,19 @@ var Board = function() {
     return neighbors;
   }
 
+  that.getNeighbors = function(x, y) {
+    living = [];
+    dead = [];
+    that.getNeighborIndices(x, y).forEach(function(key) {
+      if (that.isAlive(key)) {
+        living.push(key);
+      } else {
+        dead.push(key);
+      }
+    });
+    return {'living': living, 'dead': dead};
+  }
+
   /*
   Amongst neighbors of a particular cell get the ones that are dead.
   @param{}
